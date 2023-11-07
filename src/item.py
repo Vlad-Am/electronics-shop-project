@@ -32,9 +32,12 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price = self.price * self.pay_rate
+        return self.price
 
     def add_item_to_list(self):
         """
         Добавляет экземпляр Item в список all.
         """
         Item.all.append(self)
+
+

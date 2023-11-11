@@ -14,3 +14,22 @@ def test_item():
     assert item1.apply_discount() == 5000
     item1.add_item_to_list()
     assert len(Item.all) == 1
+
+
+def test_name():
+    item1 = Item("Ноутбук", 1000, 3)
+    assert item1.name == "Ноутбук"
+    item1.name = "Ноутбук и еще кое-что для теста вызова функции срезания данных, если наименование слишком длинное"
+    assert item1.name == "Ноутбук и "
+
+
+def test_csv():
+    Item.instantiate_from_csv('src/items.csv')
+    assert len(Item.all) == 6
+    assert Item.all[2].quantity == "3"
+
+
+def test_string_to_number():
+    assert Item.string_to_number('5') == 5
+    assert Item.string_to_number('5.0') == 5
+    assert Item.string_to_number('5.5') == 5

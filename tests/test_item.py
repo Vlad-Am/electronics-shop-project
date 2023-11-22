@@ -43,3 +43,9 @@ def test_str():
 def test_repr():
     item1 = Item("Смартфон", 10000, 20)
     assert repr(item1) == "Item('Смартфон', 10000, 20)"
+
+
+def test_add():
+    item1 = Item("Смартфон", 10000, 20)
+    item2 = Item("Ноутбук", 20000, 5)
+    assert item1 + item2 == 25

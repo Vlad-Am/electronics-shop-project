@@ -1,8 +1,8 @@
 import csv
-from abc import ABC
+import os
 
 
-class Item(ABC):
+class Item:
     """
     Класс для представления товара в магазине.
     """
@@ -62,11 +62,24 @@ class Item(ABC):
             self.__name = value[:10]
 
     @classmethod
-    def instantiate_from_csv(cls, file_path):
-        with open(file_path, 'r', newline='') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                cls.all.append(cls(row['name'], row['price'], row['quantity']))
+    def instantiate_from_csv(cls, filename='src/items.csv'):
+        # if not file_path:
+        #     raise FileNotFoundError("Отсутствует файл item.csv")
+        # elif not isinstance(file, InstantiateCSVError):
+        #     raise InstantiateCSVError()
+        # else:
+        path = os.path.join(os.path.dirname(__file__), "..", filename)
+        try:
+            with open(path, 'r', newline='', encoding="windows-1251") as file:
+                Item.all.clear()
+                reader = csv.DictReader(file, delimiter=",")
+                dict_reader = list(reader)
+                for row in dict_reader:
+                    cls.all.append(cls(row['name'], row['price'], row['quantity']))
+        except FileNotFoundError:
+            raise FileNotFoundError("Отсутствует файл item.csv")
+        except (KeyError, TypeError):
+            raise InstantiateCSVError("Файл item.csv поврежден")
 
     @staticmethod
     def string_to_number(value: str) -> int:
@@ -77,3 +90,7 @@ class Item(ABC):
 
     def __str__(self):
         return self.__name
+
+
+class InstantiateCSVError(Exception):
+    pass
